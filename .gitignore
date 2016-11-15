@@ -1,5 +1,7 @@
 *~
 tests/alu.circ
 tests/regfile.circ
+tests/cpu.circ
+tests/mem.circ
 TEST_LOG
 *pyc
