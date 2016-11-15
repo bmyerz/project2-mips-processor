@@ -5,4 +5,5 @@ tests/cpu.circ
 tests/mem.circ
 tests/cs3410.jar
 TEST_LOG
+*.hex
 *pyc
