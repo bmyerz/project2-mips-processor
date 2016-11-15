@@ -15,14 +15,7 @@ def print_usage():
     print("\tThe first argument states what circuit produced the input.")
     sys.exit(-1)
 
-def main():
-    if len(sys.argv) < 2:
-        print_usage()
-
-    typ = sys.argv[1]
-    rdr = csv.reader(sys.stdin, delimiter='\t')
-    wtr = csv.writer(sys.stdout, delimiter='\t')
-
+def headers(wtr, typ):
     if typ == 'alu':
         wtr.writerow(["Test #", "OF", "Eq", "Result"])
     elif typ == 'regfile':
@@ -30,9 +23,23 @@ def main():
     elif typ == 'cpu':
         wtr.writerow(['$s0 Value', '$s1 Value', '$s2 Value', '$ra Value', '$sp Value', 'Time Step', 'Fetch Addr', 'Instruction'])
     else:
+        return False
+
+    return True
+
+def main():
+    if len(sys.argv) < 2:
+        print_usage()
+
+    typ = sys.argv[1]
+    rdr = csv.reader(sys.stdin, delimiter='\t')
+    wtr = csv.writer(sys.stdout, delimiter='\t')
+    
+    if not headers(wtr, typ):
         print_usage()
 
     for row in rdr:
         wtr.writerow([bin2hex(b) for b in row])
 
-main()
+if __name__ == '__main__':
+    main()

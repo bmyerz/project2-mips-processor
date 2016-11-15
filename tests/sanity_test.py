@@ -9,9 +9,13 @@ import signal
 import re
 import sys
 import shutil
+import decode_out as dec
+import csv
 
-file_locations = os.path.expanduser(os.getcwd())
-logisim_location = os.path.join(os.getcwd(),"logisim.jar")
+#file_locations = os.path.expanduser(os.getcwd())
+file_locations = "."
+#logisim_location = os.path.join(os.getcwd(),"logisim.jar")
+logisim_location = "logisim.jar"
 
 
 class TestCase():
@@ -23,7 +27,7 @@ class TestCase():
     self.circfile  = circfile
     self.tracefile = tracefile
 
-  def __call__(self):
+  def __call__(self, typ):
     output = tempfile.TemporaryFile(mode='r+')
     command = ["java","-jar",logisim_location,"-tty","table", self.circfile]
     proc = subprocess.Popen(command,
@@ -31,18 +35,29 @@ class TestCase():
                             stdout=subprocess.PIPE)
     try:
       reference = open(self.tracefile)
-      passed = compare_unbounded(proc.stdout,reference)
+      debug_buffer = [] 
+      passed = compare_unbounded(proc.stdout,reference,debug_buffer)
     finally:
       os.kill(proc.pid,signal.SIGTERM)
     if passed:
       return (True, "Matched expected output")
     else:
+      wtr = csv.writer(sys.stdout, delimiter='\t')
+      if not dec.headers(wtr, typ):
+        print "CANNOT FORMAT test type=",typ
+      else:
+          for row in debug_buffer:
+            wtr.writerow([dec.bin2hex(b) for b in row[0].split('\t')])
+            wtr.writerow([dec.bin2hex(b) for b in row[1].split('\t')])
+
       return (False, "Did not match expected output")
 
-def compare_unbounded(student_out, reference_out):
+def compare_unbounded(student_out, reference_out, debug):
   while True:
-    line1 = student_out.readline()
-    line2 = reference_out.readline()
+    line1 = student_out.readline().rstrip()
+    line2 = reference_out.readline().rstrip()
+    debug.append((line1, line2))
+   
     if line2 == '':
       break
     if line1 != line2:
@@ -55,8 +70,8 @@ def run_tests(tests):
   tests_passed = 0
   tests_failed = 0
 
-  for description,test in tests:
-    test_passed, reason = test()
+  for description,test,typ in tests:
+    test_passed, reason = test(typ)
     if test_passed:
       print "\tPASSED test: %s" % description
       tests_passed += 1
@@ -69,16 +84,16 @@ def run_tests(tests):
 p1_tests = [
   ("ALU add (with overflow) test",
         TestCase(os.path.join(file_locations,'alu-add.circ'),
-                 os.path.join(file_locations,'reference_output/alu-add.out'))),
+                 os.path.join(file_locations,'reference_output/alu-add.out')), "alu"),
   ("ALU arithmetic right shift test",
         TestCase(os.path.join(file_locations,'alu-sra.circ'),
-                 os.path.join(file_locations,'reference_output/alu-sra.out'))),
+                 os.path.join(file_locations,'reference_output/alu-sra.out')), "alu"),
   ("RegFile read/write test",
         TestCase(os.path.join(file_locations,'regfile-read_write.circ'),
-                 os.path.join(file_locations,'reference_output/regfile-read_write.out'))),
+                 os.path.join(file_locations,'reference_output/regfile-read_write.out')), "regfile"),
   ("RegFile $zero test",
         TestCase(os.path.join(file_locations,'regfile-zero.circ'),
-                 os.path.join(file_locations,'reference_output/regfile-zero.out'))),
+                 os.path.join(file_locations,'reference_output/regfile-zero.out')), "regfile"),
 ]
 
 p2_tests = [
