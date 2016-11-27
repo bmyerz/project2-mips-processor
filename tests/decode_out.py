@@ -24,6 +24,8 @@ def headers(wtr, typ):
         wtr.writerow(['$s0 Value', '$s1 Value', '$s2 Value', '$ra Value', '$sp Value', 'Time Step', 'Fetch Addr', 'Instruction'])
     elif typ == 'cpu-lite':
         wtr.writerow(['$s0 Value', '$s1 Value', '$s2 Value', '$ra Value', '$sp Value', 'Time Step'])
+    elif typ == 'cpu-end':
+        wtr.writerow(['$s0 Value', '$s1 Value', '$s2 Value', '$sp Value'])
     else:
         return False
 
