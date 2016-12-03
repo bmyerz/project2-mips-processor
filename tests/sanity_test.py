@@ -36,7 +36,7 @@ class TestCase():
     try:
       reference = open(self.tracefile)
       debug_buffer = [] 
-      passed = compare_unbounded(proc.stdout,reference,debug_buffer)
+      passed, msg = compare_unbounded(proc.stdout,reference,debug_buffer)
     finally:
       os.kill(proc.pid,signal.SIGTERM)
     if passed:
@@ -47,10 +47,10 @@ class TestCase():
         print "CANNOT FORMAT test type=",typ
       else:
           for row in debug_buffer:
-            wtr.writerow([dec.bin2hex(b) for b in row[0].split('\t')])
+            wtr.writerow([dec.bin2hex(b) for b in row[0].split('\t') if b!=''])
             wtr.writerow([dec.bin2hex(b) for b in row[1].split('\t')])
 
-      return (False, "Did not match expected output")
+      return (False, msg)
 
 def compare_unbounded(student_out, reference_out, debug):
   while True:
@@ -60,9 +60,11 @@ def compare_unbounded(student_out, reference_out, debug):
    
     if line2 == '':
       break
+    if line1 == '':
+      return False, "Test circuit halted too early"
     if line1 != line2:
-      return False
-  return True
+      return False, "Did not match expected output"
+  return True, ""
 
 def run_tests(tests):
   # actual submission testing code
