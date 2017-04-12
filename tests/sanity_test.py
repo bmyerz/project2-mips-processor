@@ -110,6 +110,9 @@ p2sc_tests = [
   ("CPU starter test",
         TestCase(os.path.join(file_locations,'CPU-starter_kit_test.circ'),
                  os.path.join(file_locations,'reference_output/CPU-starter_kit_test.sc.out')), "cpu"),
+  ("func test",
+        TestCase(os.path.join(file_locations,'func_test.circ'),
+                 os.path.join(file_locations,'reference_output/func_test.sc.out')), "cpu-end"),
 ]
 
 if __name__ == '__main__':
