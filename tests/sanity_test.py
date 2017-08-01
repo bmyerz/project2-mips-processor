@@ -38,7 +38,9 @@ class TestCase():
       debug_buffer = [] 
       passed, msg = compare_unbounded(proc.stdout,reference,debug_buffer)
     finally:
-      os.kill(proc.pid,signal.SIGTERM)
+      if os.name != 'nt':
+        os.kill(proc.pid,signal.SIGTERM)
+
     if passed:
       return (True, "Matched expected output")
     else:
