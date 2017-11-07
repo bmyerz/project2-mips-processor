@@ -15,21 +15,41 @@ def print_usage():
     print("\tThe first argument states what circuit produced the input.")
     sys.exit(-1)
 
-def headers(wtr, typ):
-    if typ == 'alu':
-        wtr.writerow(["Test #", "OF", "Eq", "Result"])
-    elif typ == 'regfile':
-        wtr.writerow(["Test #", "$s0 Value", "$s1 Value", "$s2 Value", "$ra Value", "$sp Value", "Read Data 1", "Read Data 2"])
-    elif typ == 'cpu':
-        wtr.writerow(['$s0 Value', '$s1 Value', '$s2 Value', '$ra Value', '$sp Value', 'Time Step', 'Fetch Addr', 'Instruction'])
-    elif typ == 'cpu-lite':
-        wtr.writerow(['$s0 Value', '$s1 Value', '$s2 Value', '$ra Value', '$sp Value', 'Time Step'])
-    elif typ == 'cpu-end':
-        wtr.writerow(['$s0 Value', '$s1 Value', '$s2 Value', '$sp Value'])
-    else:
-        return False
+class OutputFormatException(Exception):
+    pass
 
-    return True
+class OutputFormat:
+    def __init__(self, typ, headers, bitwidths):
+        self.typ = typ
+        assert len(headers) == len(bitwidths)
+        self.headers = headers
+        self.bitwidths = bitwidths
+
+    def validate(self, values):
+        if not (len(values) == len(self.bitwidths)):
+                raise OutputFormatException("incorrect number of values: {0} instead of {1}".format(len(values), len(self.bitwidths)))
+
+        # checks assuming positive integer interpretation
+        for i in range(0, len(values)):
+            if not (values[i] < 2**self.bitwidths[i]):
+                raise OutputFormatException("incorrect bitwidth in item {0} of {1}".format(i, values))
+
+    def header(self, wtr):
+        wtr.writerow(self.headers)
+
+def get_test_format(typ):
+    if typ == 'alu':
+        return OutputFormat('alu', ["Test #", "OF", "Eq", "Result"], [8,1,1,32])  
+    elif typ == 'regfile':
+        return OutputFormat('regfile', ["Test #", "$s0 Value", "$s1 Value", "$s2 Value", "$ra Value", "$sp Value", "Read Data 1", "Read Data 2"], [8, 32, 32, 32, 32, 32, 32, 32])
+    elif typ == 'cpu':
+       return OutputFormat('cpu',  ['$s0 Value', '$s1 Value', '$s2 Value', '$ra Value', '$sp Value', 'Time Step', 'Fetch Addr', 'Instruction'], [32,32,32,32,32,8,32,32])
+    elif typ == 'cpu-lite':
+        return OutputFormat('cpu-lite',  ['$s0 Value', '$s1 Value', '$s2 Value', '$ra Value', '$sp Value', 'Time Step'], [32,32,32,32,32,8])
+    elif typ == 'cpu-end':
+        return OutputFormat('cpu-end',  ['$s0 Value', '$s1 Value', '$s2 Value', '$sp Value'], [32,32,32,32])
+    else:
+       return None
 
 def main():
     if len(sys.argv) < 2:
