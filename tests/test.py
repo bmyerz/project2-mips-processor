@@ -184,7 +184,7 @@ p2sc_tests = [
 
 if __name__ == '__main__':
   if len(sys.argv) < 2:
-    print("Usage: " + sys.argv[0] + " (p1|p2)")
+    print("Usage: " + sys.argv[0] + " (p1|p2|p2sc)")
     sys.exit(-1)
   if sys.argv[1] == 'p1':
     run_tests(p1_tests)
