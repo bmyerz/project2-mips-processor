@@ -179,7 +179,11 @@ p2sc_tests = [
                  os.path.join(file_locations,'reference_output/CPU-starter_kit_test.sc.out')), "cpu"),
   ("func test",
         TestCase(os.path.join(file_locations,'func_test.circ'),
-                 os.path.join(file_locations,'reference_output/func_test.sc.out')), "cpu-end"),
+        [
+                         [0,0,0,0],
+                         [36,0,0,0],
+                         [36,16,0,0]
+                         ]), "cpu-end")
 ]
 
 if __name__ == '__main__':
