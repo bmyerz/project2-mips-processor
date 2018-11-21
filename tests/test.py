@@ -31,7 +31,7 @@ class TestCase():
   def __call__(self, typ):
     oformat = dec.get_test_format(typ)
     if not oformat:
-        print "CANNOT format test type"
+        print "CANNOT format test type called [{}]".format(typ)
         return (False, "Error in the test")
 
     try:
@@ -41,7 +41,7 @@ class TestCase():
         else:
             [oformat.validate(x) for x in self.expected]
     except dec.OutputFormatException as e:
-        print "Error in formatting of expected output:"
+        print "Error in formatting of expected output (check test.py if this is a test you wrote):"
         print "\t", e
         return (False, "Error in the test")
 
@@ -54,7 +54,7 @@ class TestCase():
       debug_buffer = [] 
       passed = compare_unbounded(proc.stdout,self.expected, oformat, debug_buffer)
     except dec.OutputFormatException as e:
-        print "Error in formatting of Logisim output:"
+        print "Error in formatting of Logisim output (check {}):".format(self.circfile)
         print "\t", e
         return (False, "Error in the test")
     finally:
@@ -70,7 +70,7 @@ class TestCase():
         wtr.writerow(['{0:x}'.format(b) for b in row[0]])
         wtr.writerow(['{0:x}'.format(b) for b in row[1]])
 
-      return (False, "Did not match expected output")
+      return (False, "Did not match expected output (check {}, also check test.py if this is a test you wrote)".format(self.circfile))
 
 def compare_unbounded(student_out, expected, oformat, debug):
   parser = OutputProvider(oformat)
@@ -116,7 +116,10 @@ class OutputProvider(object):
         try:
             values = [int(v, 2) for v in values_bin]
         except ValueError as e:
-            raise dec.OutputFormatException("non-integer in {}".format(values_bin))
+            if values_bin == ['']:
+                raise dec.OutputFormatException("you have a non-integer in this list: {}. If this is logisim output, are you sure you have a circ file for this test?".format(values_bin))
+            else :
+                raise dec.OutputFormatException("you have a non-integer in this list: {}".format(values_bin))
         self.format.validate(values)
         return values
 
