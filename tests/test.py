@@ -210,7 +210,11 @@ p2_tests = [
 p2sc_tests = [
   ("CPU starter test",
         TestCase(os.path.join(file_locations,'CPU-starter_kit_test.circ'),
-                 os.path.join(file_locations,'reference_output/CPU-starter_kit_test.sc.out')), "cpu"),
+                [[0, 0, 0, 0x0, 0x0, 0, 0x0, 0x20100001],
+                 [1, 0, 0, 0x0, 0x0, 1, 0x4, 0x20110002],
+                 [1, 2, 0, 0x0, 0x0, 2, 0x8, 0x02119020],
+                 [1, 2, 3, 0x0, 0x0, 3, 0xC, 0x00000000],
+                 [1, 2, 3, 0x0, 0x0, 4, 0x10, 0x00000000]]), "cpu"),
   ("func test",
         TestCase(os.path.join(file_locations,'func_test.circ'),
         [
