@@ -1,6 +1,6 @@
 # Run MIPS single-cycle tests
 p2sc:
-	cp alu.circ regfile.circ mem.circ cpu.circ tests
+	cp alu.circ regfile.circ mem.circ cpu.circ control.circ tests
 	cd tests && python3 ./test.py p2sc | tee ../TEST_LOG
 
 # Run ALU + Regfile tests
