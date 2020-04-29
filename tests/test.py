@@ -202,13 +202,6 @@ p1_tests = [
                  [7, 0xBAD00DAD, 0xFEEDF00D, 0xBABABABA, 0x10101010, 0xDADADADA, 0x0, 0x0]]), "regfile")
 ]
 
-# 2 stage pipeline tests
-p2_tests = [
-  ("CPU starter test",
-        TestCase(os.path.join(file_locations,'CPU-starter_kit_test.circ'),
-                 os.path.join(file_locations,'reference_output/CPU-starter_kit_test.out')), "cpu"),
-]
-
 # Single-cycle (sc) tests
 p2sc_tests = [
   ("CPU starter test",
@@ -233,10 +226,8 @@ if __name__ == '__main__':
     sys.exit(-1)
   if sys.argv[1] == 'p1':
     run_tests(p1_tests)
-  elif sys.argv[1] == 'p2':
-    run_tests(p2_tests)
   elif sys.argv[1] == 'p2sc':
     run_tests(p2sc_tests)
   else:
-    print("Usage: " + sys.argv[0] + " (p1|p2)")
+    print("Usage: " + sys.argv[0] + " (p1|p2sc)")
     sys.exit(-1)
