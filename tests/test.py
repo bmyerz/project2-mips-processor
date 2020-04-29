@@ -204,8 +204,8 @@ p1_tests = [
 
 # Single-cycle (sc) tests
 p2sc_tests = [
-  ("CPU starter test",
-        TestCase(os.path.join(file_locations,'CPU-starter_kit_test.circ'),
+  ("starter test",
+        TestCase(os.path.join(file_locations,'starter_test.circ'),
                 [[0, 0, 0, 0x0, 0x0, 0, 0x0, 0x20100001],
                  [1, 0, 0, 0x0, 0x0, 1, 0x4, 0x20110002],
                  [1, 2, 0, 0x0, 0x0, 2, 0x8, 0x02119020],
