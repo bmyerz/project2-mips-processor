@@ -31,7 +31,7 @@ class TestCase():
   def __call__(self, typ):
     oformat = dec.get_test_format(typ)
     if not oformat:
-        print "CANNOT format test type called [{}]".format(typ)
+        print("CANNOT format test type called [{}]".format(typ))
         return (False, "Error in the test")
 
     try:
@@ -41,21 +41,21 @@ class TestCase():
         else:
             [oformat.validate(x) for x in self.expected]
     except dec.OutputFormatException as e:
-        print "Error in formatting of expected output (check test.py if this is a test you wrote):"
-        print "\t", e
+        print("Error in formatting of expected output (check test.py if this is a test you wrote):")
+        print("\t", e)
         return (False, "Error in the test")
 
     output = tempfile.TemporaryFile(mode='r+')
     command = ["java","-jar",logisim_location,"-tty","table", self.circfile]
     proc = subprocess.Popen(command,
                             stdin=open(os.devnull),
-                            stdout=subprocess.PIPE)
+                            stdout=subprocess.PIPE, text=True)
     try:
       debug_buffer = [] 
       passed = compare_unbounded(proc.stdout,self.expected, oformat, debug_buffer)
     except dec.OutputFormatException as e:
-        print "Error in formatting of Logisim output (check {}):".format(self.circfile)
-        print "\t", e
+        print("Error in formatting of Logisim output (check {}):".format(self.circfile))
+        print("\t", e)
         return (False, "Error in the test")
     finally:
       if os.name != 'nt':
@@ -63,7 +63,7 @@ class TestCase():
     if passed:
       return (True, "Matched expected output")
     else:
-      print "Format is student then expected"
+      print("Format is student then expected")
       wtr = csv.writer(sys.stdout, delimiter='\t')
       oformat.header(wtr)
       for row in debug_buffer:
@@ -87,20 +87,20 @@ def compare_unbounded(student_out, expected, oformat, debug):
 
 def run_tests(tests):
   # actual submission testing code
-  print "Testing files..."
+  print("Testing files...")
   tests_passed = 0
   tests_failed = 0
 
   for description,test,typ in tests:
     test_passed, reason = test(typ)
     if test_passed:
-      print "\tPASSED test: %s" % description
+      print("\tPASSED test: %s" % description)
       tests_passed += 1
     else:
-      print "\tFAILED test: %s (%s)" % (description, reason)
+      print("\tFAILED test: %s (%s)" % (description, reason))
       tests_failed += 1
   
-  print "Passed %d/%d tests" % (tests_passed, (tests_passed + tests_failed))
+  print("Passed %d/%d tests" % (tests_passed, (tests_passed + tests_failed)))
 
 class OutputProvider(object):
     def __init__(self, format):
@@ -222,12 +222,12 @@ p2sc_tests = [
 
 if __name__ == '__main__':
   if len(sys.argv) < 2:
-    print("Usage: " + sys.argv[0] + " (p1|p2|p2sc)")
+    print(("Usage: " + sys.argv[0] + " (p1|p2|p2sc)"))
     sys.exit(-1)
   if sys.argv[1] == 'p1':
     run_tests(p1_tests)
   elif sys.argv[1] == 'p2sc':
     run_tests(p2sc_tests)
   else:
-    print("Usage: " + sys.argv[0] + " (p1|p2sc)")
+    print(("Usage: " + sys.argv[0] + " (p1|p2sc)"))
     sys.exit(-1)
