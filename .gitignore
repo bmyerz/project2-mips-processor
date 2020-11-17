@@ -4,6 +4,8 @@ tests/regfile.circ
 tests/cpu.circ
 tests/mem.circ
 tests/cs3410.jar
+tests/iodevices.circ
+tests/control.circ
 TEST_LOG
 *.hex
 *pyc

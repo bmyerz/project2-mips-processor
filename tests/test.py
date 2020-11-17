@@ -211,13 +211,6 @@ p2sc_tests = [
                  [1, 2, 0, 0x0, 0x0, 2, 0x8, 0x02119020],
                  [1, 2, 3, 0x0, 0x0, 3, 0xC, 0x00000000],
                  [1, 2, 3, 0x0, 0x0, 4, 0x10, 0x00000000]]), "cpu"),
-  ("func test",
-        TestCase(os.path.join(file_locations,'func_test.circ'),
-        [
-                         [0,0,0,0],
-                         [36,0,0,0],
-                         [36,16,0,0]
-                         ]), "cpu-end")
 ]
 
 if __name__ == '__main__':
