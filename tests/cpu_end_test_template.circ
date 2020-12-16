@@ -132,7 +132,7 @@
       <a name="valign" val="base"/>
     </tool>
   </lib>
-  <lib desc="file#/Users/bdmyers/OneDrive - University of Iowa/uiowa/2630/cs2630_materials/project2/sp20/project2-2-no-IO/tests/cpu.circ" name="7"/>
+  <lib desc="file#cpu.circ" name="7"/>
   <main name="main"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
