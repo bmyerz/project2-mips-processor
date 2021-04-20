@@ -48,6 +48,8 @@ def get_test_format(typ):
         return OutputFormat('cpu-lite',  ['$s0 Value', '$s1 Value', '$s2 Value', '$ra Value', '$sp Value', 'Time Step'], [32,32,32,32,32,8])
     elif typ == 'cpu-end':
         return OutputFormat('cpu-end',  ['$s0 Value', '$s1 Value', '$s2 Value', '$sp Value'], [32,32,32,32])
+    elif typ == 'alu-control':
+        return OutputFormat('alu-control', ['Test #', 'Switch'], [8,4])
     else:
        return None
 
