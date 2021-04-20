@@ -5,5 +5,5 @@ p2sc:
 
 # Run ALU + Regfile tests
 p1:
-	cp alu.circ regfile.circ tests
+	cp alu.circ alu-control.circ regfile.circ tests
 	cd tests && python3 ./test.py p1 | tee ../TEST_LOG

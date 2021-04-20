@@ -133,7 +133,7 @@
       <a name="valign" val="base"/>
     </tool>
   </lib>
-  <lib desc="file#alu.circ" name="7"/>
+  <lib desc="file#alu-control.circ" name="7"/>
   <main name="main"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
@@ -175,24 +175,21 @@
     <a name="clabel" val=""/>
     <a name="clabelup" val="east"/>
     <a name="clabelfont" val="SansSerif plain 12"/>
-    <wire from="(330,330)" to="(390,330)"/>
-    <wire from="(390,200)" to="(390,330)"/>
-    <wire from="(390,80)" to="(570,80)"/>
     <wire from="(100,40)" to="(100,50)"/>
-    <wire from="(390,80)" to="(390,100)"/>
     <wire from="(40,100)" to="(150,100)"/>
     <wire from="(60,180)" to="(60,200)"/>
     <wire from="(90,140)" to="(90,160)"/>
+    <wire from="(370,160)" to="(370,190)"/>
     <wire from="(150,100)" to="(150,130)"/>
     <wire from="(180,160)" to="(180,190)"/>
     <wire from="(330,190)" to="(370,190)"/>
     <wire from="(330,110)" to="(370,110)"/>
     <wire from="(170,50)" to="(200,50)"/>
-    <wire from="(410,110)" to="(570,110)"/>
-    <wire from="(170,160)" to="(170,330)"/>
+    <wire from="(370,150)" to="(400,150)"/>
+    <wire from="(370,160)" to="(400,160)"/>
     <wire from="(170,50)" to="(170,160)"/>
+    <wire from="(370,110)" to="(370,150)"/>
     <wire from="(180,30)" to="(200,30)"/>
-    <wire from="(170,330)" to="(190,330)"/>
     <wire from="(240,40)" to="(260,40)"/>
     <wire from="(180,110)" to="(180,160)"/>
     <wire from="(90,160)" to="(170,160)"/>
@@ -207,15 +204,57 @@
     <wire from="(100,50)" to="(170,50)"/>
     <wire from="(40,100)" to="(40,160)"/>
     <wire from="(430,150)" to="(630,150)"/>
+    <comp lib="7" loc="(430,150)" name="main"/>
+    <comp lib="6" loc="(359,79)" name="Text">
+      <a name="text" val="opcodes"/>
+    </comp>
+    <comp lib="0" loc="(260,40)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="label" val="halt"/>
+      <a name="labelloc" val="east"/>
+    </comp>
+    <comp lib="0" loc="(630,150)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="width" val="4"/>
+      <a name="label" val="Switch"/>
+      <a name="labelloc" val="east"/>
+    </comp>
     <comp lib="4" loc="(80,160)" name="Register"/>
-    <comp lib="4" loc="(330,190)" name="ROM">
-      <a name="dataWidth" val="32"/>
-      <a name="contents">addr/data: 8 32
-4242424 645ff555 1 0 cba9cbaa 234 f0000200 ffffff0f
-</a>
+    <comp lib="0" loc="(60,200)" name="Clock">
+      <a name="facing" val="north"/>
+    </comp>
+    <comp lib="3" loc="(140,130)" name="Adder"/>
+    <comp lib="6" loc="(327,250)" name="Text">
+      <a name="text" val="&quot;funct&quot; are random for each test, since bits [5:0] are part of immediate for I-type and there is no funct"/>
     </comp>
     <comp lib="3" loc="(240,40)" name="Comparator">
       <a name="mode" val="unsigned"/>
+    </comp>
+    <comp lib="0" loc="(180,30)" name="Constant">
+      <a name="width" val="8"/>
+      <a name="value" val="0xf"/>
+    </comp>
+    <comp lib="4" loc="(330,190)" name="ROM">
+      <a name="dataWidth" val="6"/>
+      <a name="contents">addr/data: 8 6
+0 1f 3f 1d 11 2a 11 22
+33 3a 3b
+</a>
+    </comp>
+    <comp lib="6" loc="(443,407)" name="Text">
+      <a name="text" val="There should be no blue/red wires here, and the result shouldn't be x's."/>
+    </comp>
+    <comp lib="4" loc="(330,110)" name="ROM">
+      <a name="dataWidth" val="6"/>
+      <a name="contents">addr/data: 8 6
+9 8 c d 23 2b 9 8
+c d 23 2b
+</a>
+    </comp>
+    <comp lib="6" loc="(355,224)" name="Text">
+      <a name="text" val="&quot;functs&quot;"/>
     </comp>
     <comp lib="0" loc="(100,40)" name="Pin">
       <a name="facing" val="south"/>
@@ -224,60 +263,8 @@
       <a name="label" val="Test #"/>
       <a name="labelloc" val="north"/>
     </comp>
-    <comp lib="7" loc="(400,150)" name="main"/>
-    <comp lib="0" loc="(570,80)" name="Pin">
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-      <a name="label" val="Signed Overflow"/>
-      <a name="labelloc" val="east"/>
-    </comp>
-    <comp lib="6" loc="(443,407)" name="Text">
-      <a name="text" val="There should be no blue/red wires here, and the result shouldn't be x's."/>
-    </comp>
-    <comp lib="4" loc="(330,330)" name="ROM">
-      <a name="dataWidth" val="4"/>
-      <a name="contents">addr/data: 8 4
-32*8
-</a>
-    </comp>
-    <comp lib="0" loc="(630,150)" name="Pin">
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-      <a name="width" val="32"/>
-      <a name="label" val="Result"/>
-      <a name="labelloc" val="east"/>
-    </comp>
-    <comp lib="3" loc="(140,130)" name="Adder"/>
-    <comp lib="0" loc="(570,110)" name="Pin">
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-      <a name="label" val="Equal"/>
-      <a name="labelloc" val="east"/>
-    </comp>
-    <comp lib="0" loc="(60,200)" name="Clock">
-      <a name="facing" val="north"/>
-    </comp>
-    <comp lib="4" loc="(330,110)" name="ROM">
-      <a name="dataWidth" val="32"/>
-      <a name="contents">addr/data: 8 32
-7234df39 23409824 7fffffff 0 34563456 fffffff3 80000003 fffffff0
-</a>
-    </comp>
     <comp lib="0" loc="(90,120)" name="Constant">
       <a name="width" val="8"/>
-    </comp>
-    <comp lib="6" loc="(412,64)" name="Text">
-      <a name="text" val="YOUR ALU SHOULD FIT HERE"/>
-    </comp>
-    <comp lib="0" loc="(180,30)" name="Constant">
-      <a name="width" val="8"/>
-      <a name="value" val="0xf"/>
-    </comp>
-    <comp lib="0" loc="(260,40)" name="Pin">
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-      <a name="label" val="halt"/>
-      <a name="labelloc" val="east"/>
     </comp>
   </circuit>
 </project>
